@@ -6,11 +6,13 @@
   "license": "MIT",
   "type": "module",
   "repository": { "type": "git", "url": "git+https://github.com/<your-github>/dsh-reasoning-slider.git" },
+  "main": "src/index.js",
   "exports": {
+    ".": "./src/index.js",
     "./client": "./lib/client.js",
     "./package.json": "./package.json"
   },
-  "files": ["lib/", "README.md", "README.zh.md"],
+  "files": ["src/", "lib/", "README.md", "README.zh.md"],
   "dsh": {
     "client": {
       "inject": ["react", "react/jsx-runtime"],
