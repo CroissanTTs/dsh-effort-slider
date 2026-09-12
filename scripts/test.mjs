@@ -42,10 +42,11 @@ const ctx = {
 	}
 };
 // 真实结构：getSnapshot/subscribe 在 directory.store 上；select 在实例上。
+// store 快照形状：{current, routable, groups, failures, status, error}。
 const mockStore = {
 	getSnapshot: () => ({
-		selection: { provider: "bailian", model: "qwen3.8-max", reasoningEffort: "medium" },
-		value: { models: { "bailian/qwen3.8-max": { reasoning: { efforts: [{ id: "off" }, { id: "low" }, { id: "medium" }, { id: "xhigh" }] } } } }
+		current: { provider: "bailian", model: "qwen3.8-max", reasoningEffort: "medium" },
+		groups: [{ id: "bailian", name: "百炼", models: [{ id: "qwen3.8-max", reasoning: { efforts: [{ id: "off" }, { id: "low" }, { id: "medium" }, { id: "xhigh" }] } }] }]
 	}),
 	subscribe: () => () => {}
 };
@@ -79,7 +80,7 @@ ok("label 显示当前档位中文", () => {
 });
 
 // ---- 无档位模型不渲染 ----
-const noEffortStore = { getSnapshot: () => ({ selection: { provider: "bailian", model: "kimi-k3" }, value: { models: { "bailian/kimi-k3": {} } } }), subscribe: () => () => {} };
+const noEffortStore = { getSnapshot: () => ({ current: { provider: "bailian", model: "kimi-k3" }, groups: [{ id: "bailian", models: [{ id: "kimi-k3" }] }] }), subscribe: () => () => {} };
 const noTree = registered.component({ store: noEffortStore, select: () => {} });
 ok("无档位模型不渲染滑动条", () => assert.equal(noTree, null));
 
