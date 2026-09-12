@@ -10,7 +10,7 @@ let passed = 0;
 const ok = (n, fn) => { try { fn(); passed++; console.log(`  ✓ ${n}`); } catch (e) { console.error(`  ✗ ${n} — ${e.message}`); throw e; } };
 
 // ---- mock module loader：执行 lib/client.js 取得 exports ----
-const reactStub = { useEffect: (f) => f(), useState: (init) => [typeof init === "function" ? init() : init, () => {}], useCallback: (f) => f };
+const reactStub = { useEffect: (f) => f(), useState: (init) => [typeof init === "function" ? init() : init, () => {}], useCallback: (f) => f, useMemo: (f) => f() };
 const jsxRuntime = { jsx: (type, props) => ({ el: type, ...props }), jsxs: (type, props) => ({ el: type, ...props, children: props.children }) };
 const requires = new Map([
 	["react", reactStub],
@@ -46,7 +46,7 @@ const ctx = {
 const mockStore = {
 	getSnapshot: () => ({
 		current: { provider: "bailian", model: "qwen3.8-max", reasoningEffort: "medium" },
-		groups: [{ id: "bailian", name: "百炼", models: [{ id: "qwen3.8-max", reasoning: { efforts: [{ id: "off" }, { id: "low" }, { id: "medium" }, { id: "xhigh" }] } }] }]
+		groups: [{ id: "bailian", name: "百炼", models: [{ id: "qwen3.8-max", reasoning: { efforts: [{ id: "off", name: "Off" }, { id: "low", name: "Low" }, { id: "medium", name: "Medium" }, { id: "xhigh", name: "Xhigh" }] } }] }]
 	}),
 	subscribe: () => () => {}
 };
@@ -66,17 +66,19 @@ ok("inject 提供 store（= directory.store）+ select", () => {
 
 // ---- 渲染：4 档模型显示滑动条；current=medium 命中索引 2 ----
 const tree = registered.component(props);
-ok("3 档模型渲染滑动条（range input）", () => {
+ok("4 档模型渲染滑动条（含 range input + 填充 + 拇指）", () => {
 	assert.equal(tree.el, "div");
-	const range = tree.children.find((c) => c.el === "input");
-	assert.ok(range, "应有 range input");
-	assert.equal(range.el, "input");
-	assert.equal(range.value, 2); // medium 在 [off,low,medium,xhigh] 中索引 2
+	assert.equal(tree.className, "dsh-rs");
+	// track 子树里的隐藏 range input
+	const track = tree.children.find((c) => c.el === "div" && c.className === "dsh-rs-track");
+	assert.ok(track, "应有 track");
+	const input = track.children.find((c) => c.el === "input");
+	assert.ok(input, "应有隐藏 range input");
+	assert.equal(input.value, 2); // medium 在 [off,low,medium,xhigh] 中索引 2
 });
-ok("label 显示当前档位中文", () => {
-	const labelSpans = tree.children.filter((c) => c.el === "span" && c.children && typeof c.children === "string");
-	const valueLabel = labelSpans[1]; // 第一个是静态"推理"标签，第二个是当前值
-	assert.ok(["关","极低","低","中","高","高+","拉满"].includes(valueLabel?.children), `got ${valueLabel?.children}`);
+ok("label 显示当前档位名（取自 catalog effort.name）", () => {
+	const labelSpan = tree.children.find((c) => c.el === "span" && c.className === "dsh-rs-label");
+	assert.equal(labelSpan?.children, "Medium");
 });
 
 // ---- 无档位模型不渲染 ----
