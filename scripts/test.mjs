@@ -41,14 +41,15 @@ const ctx = {
 		fn(scope);
 	}
 };
-const mockDirectory = {
+// 真实结构：getSnapshot/subscribe 在 directory.store 上；select 在实例上。
+const mockStore = {
 	getSnapshot: () => ({
 		selection: { provider: "bailian", model: "qwen3.8-max", reasoningEffort: "medium" },
 		value: { models: { "bailian/qwen3.8-max": { reasoning: { efforts: [{ id: "off" }, { id: "low" }, { id: "medium" }, { id: "xhigh" }] } } } }
 	}),
-	store: { subscribe: () => () => {} },
-	select: async () => {}
+	subscribe: () => () => {}
 };
+const mockDirectory = { store: mockStore, select: async () => {} };
 clientExports.apply(ctx);
 ok("apply 把组件注册进 conversation.input.right", () => {
 	assert.equal(registered.opts.name, "conversation.input.right");
@@ -57,12 +58,12 @@ ok("apply 把组件注册进 conversation.input.right", () => {
 });
 
 const props = registered.opts.inject("session-1");
-ok("dock inject 提供 directory + select", () => {
-	assert.equal(props.directory, mockDirectory);
+ok("inject 提供 store（= directory.store）+ select", () => {
+	assert.equal(props.store, mockStore);
 	assert.equal(typeof props.select, "function");
 });
 
-// ---- 渲染：3 档模型显示滑动条；current=medium 命中索引 2 ----
+// ---- 渲染：4 档模型显示滑动条；current=medium 命中索引 2 ----
 const tree = registered.component(props);
 ok("3 档模型渲染滑动条（range input）", () => {
 	assert.equal(tree.el, "div");
@@ -78,8 +79,8 @@ ok("label 显示当前档位中文", () => {
 });
 
 // ---- 无档位模型不渲染 ----
-const noEffortDir = { getSnapshot: () => ({ selection: { provider: "bailian", model: "kimi-k3" }, value: { models: { "bailian/kimi-k3": {} } } }), store: { subscribe: () => () => {} } };
-const noTree = registered.component({ directory: noEffortDir, select: () => {} });
+const noEffortStore = { getSnapshot: () => ({ selection: { provider: "bailian", model: "kimi-k3" }, value: { models: { "bailian/kimi-k3": {} } } }), subscribe: () => () => {} };
+const noTree = registered.component({ store: noEffortStore, select: () => {} });
 ok("无档位模型不渲染滑动条", () => assert.equal(noTree, null));
 
 // ---- patch 解析 ----
