@@ -1,0 +1,27 @@
+{
+  "name": "dsh-reasoning-slider",
+  "version": "1.0.0",
+  "description": "Reasoning-effort slider (Codex-GPT6-style) for DeepSeek Harness — a client (web) bundle that injects a per-session slider into the conversation input dock, shown when the selected model declares reasoning effort levels.",
+  "keywords": ["deepseek-harness", "dsh", "dsh-plugin", "reasoning", "slider", "ui"],
+  "license": "MIT",
+  "type": "module",
+  "repository": { "type": "git", "url": "git+https://github.com/<your-github>/dsh-reasoning-slider.git" },
+  "exports": {
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": ["lib/", "README.md", "README.zh.md"],
+  "dsh": {
+    "client": {
+      "inject": ["react", "react/jsx-runtime"],
+      "platform": "web"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
