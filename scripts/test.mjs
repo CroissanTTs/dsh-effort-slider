@@ -52,8 +52,8 @@ const mockStore = {
 };
 const mockDirectory = { store: mockStore, select: async () => {} };
 clientExports.apply(ctx);
-ok("apply 把组件注册进 conversation.input.right", () => {
-	assert.equal(registered.opts.name, "conversation.input.right");
+ok("apply 把组件注册进 conversation.input.left", () => {
+	assert.equal(registered.opts.name, "conversation.input.left");
 	assert.equal(registered.opts.id, "reasoning-effort-slider");
 	assert.equal(typeof registered.component, "function");
 });
