@@ -1,7 +1,7 @@
 {
-  "name": "dsh-reasoning-slider",
+  "name": "dsh-effort-slider",
   "version": "1.0.0",
-  "description": "Reasoning-effort slider (Codex-GPT6-style) for DeepSeek Harness — a client (web) bundle that injects a per-session slider into the conversation input dock, shown when the selected model declares reasoning effort levels.",
+  "description": "Reasoning effort slider for DeepSeek Harness — a client (web) bundle that injects a per-session slider into the conversation input, shown when the selected model declares reasoning effort levels. Works with any provider that has reasoning efforts (Bailian, DeepSeek official, OpenAI o-series, etc.)",
   "keywords": ["deepseek-harness", "dsh", "dsh-plugin", "reasoning", "slider", "ui"],
   "license": "MIT",
   "type": "module",

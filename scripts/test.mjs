@@ -82,7 +82,7 @@ ok("无档位模型不渲染", () => assert.equal(noTree, null));
 const doc = yaml.load(readFileSync(root + "cordis.patch.yml", "utf8"));
 ok("patch insert 挂载 reasoning-slider-client", () => {
 	const ins = doc.find((e) => Array.isArray(e.insert));
-	assert.equal(ins.insert[0].name, "dsh-reasoning-slider");
+	assert.equal(ins.insert[0].name, "dsh-effort-slider");
 });
 
 console.log(`\n全部通过（${passed} 项）`);

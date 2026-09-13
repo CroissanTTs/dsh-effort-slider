@@ -1,4 +1,4 @@
-# dsh-reasoning-slider
+# dsh-effort-slider
 
 English | [中文](README.zh.md)
 
@@ -12,7 +12,7 @@ A DeepSeek Harness client (web) bundle that injects a **reasoning-effort slider*
 ## Install
 
 ```bash
-dsh plugin --profile web add dsh-reasoning-slider
+dsh plugin --profile web add dsh-effort-slider
 ```
 
 ## Relation to the Bailian plugin

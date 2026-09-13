@@ -1,4 +1,4 @@
-# dsh-reasoning-slider
+# dsh-effort-slider
 
 [English](README.md) | 中文
 
@@ -12,7 +12,7 @@ DeepSeek Harness 客户端（web）bundle：在会话输入区（dock）注入�
 ## 安装
 
 ```bash
-dsh plugin --profile web add dsh-reasoning-slider
+dsh plugin --profile web add dsh-effort-slider
 ```
 
 ## 与百炼插件的关系
