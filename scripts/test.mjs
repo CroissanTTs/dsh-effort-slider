@@ -66,15 +66,25 @@ ok("inject 提供 store（= directory.store）+ select", () => {
 
 // ---- 渲染：4 档模型显示滑动条；current=medium 命中索引 2 ----
 const tree = registered.component(props);
-ok("4 档模型渲染滑动条（含 range input + 填充 + 拇指）", () => {
+ok("4 档模型渲染滑动条（胶囊 track + 填充 + 档位点 + 拇指 + 隐藏 input）", () => {
 	assert.equal(tree.el, "div");
 	assert.equal(tree.className, "dsh-rs");
-	// track 子树里的隐藏 range input
 	const track = tree.children.find((c) => c.el === "div" && c.className === "dsh-rs-track");
 	assert.ok(track, "应有 track");
+	const range = track.children.find((c) => c.el === "div" && c.className === "dsh-rs-range");
+	assert.ok(range, "应有 range（内缩区）");
+	const fill = range.children.find((c) => c.el === "div" && c.className === "dsh-rs-fill");
+	assert.ok(fill, "应有 fill");
+	assert.equal(fill["data-level"], "medium"); // 当前档位驱动填充色
+	assert.equal(fill.style.width, "66.66666666666666%"); // idx 2 / (4-1)
+	const dots = range.children.find((c) => c.el === "div" && c.className === "dsh-rs-dots");
+	assert.equal(dots.children.length, 4, "应有 4 个档位点");
+	const thumb = range.children.find((c) => c.el === "div" && c.className === "dsh-rs-thumb");
+	assert.ok(thumb, "应有拇指");
+	assert.equal(thumb.style.left, "66.66666666666666%");
 	const input = track.children.find((c) => c.el === "input");
 	assert.ok(input, "应有隐藏 range input");
-	assert.equal(input.value, 2); // medium 在 [off,low,medium,xhigh] 中索引 2
+	assert.equal(input.value, 2); // medium 索引 2
 });
 ok("label 显示当前档位名（取自 catalog effort.name）", () => {
 	const labelSpan = tree.children.find((c) => c.el === "span" && c.className === "dsh-rs-label");
