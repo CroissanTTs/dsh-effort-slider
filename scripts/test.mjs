@@ -54,22 +54,23 @@ ok("inject 提供 store + select", () => {
 	assert.equal(typeof props.select, "function");
 });
 
-// ---- 渲染：4 档模型渲染 icon 按钮（含状态点 + 档位名）----
+// ---- 渲染：4 档模型渲染 icon 按钮（档位名带颜色，无圆点）----
 const tree = registered.component(props);
-ok("4 档模型渲染 icon 按钮（含状态点 + 档位名）", () => {
+ok("4 档模型渲染 icon 按钮（档位名带颜色，无圆点）", () => {
 	assert.equal(tree.el, "div");
 	assert.equal(tree.className, "dsh-rsi");
 	const btn = tree.children.find((c) => c.el === "button");
 	assert.ok(btn, "应有 icon 按钮");
 	assert.equal(btn.className, "dsh-rsi-btn");
-	const dot = btn.children.find((c) => c.el === "span" && c.className === "dsh-rsi-dot");
-	assert.ok(dot, "应有状态点");
-	assert.equal(dot["data-level"], "medium");
+	const text = btn.children.find((c) => c.el === "span" && c.className === "dsh-rsi-btnText");
+	assert.ok(text, "应有档位名文字");
+	assert.equal(text["data-level"], "medium");
+	assert.equal(text.style?.color, "#6366f1"); // medium 的档位色
 });
 ok("icon 按钮显示当前档位名", () => {
 	const btn = tree.children.find((c) => c.el === "button");
-	const nameSpan = btn.children.find((c) => c.el === "span" && typeof c.children === "string");
-	assert.equal(nameSpan?.children, "Medium");
+	const text = btn.children.find((c) => c.el === "span" && c.className === "dsh-rsi-btnText");
+	assert.equal(text?.children, "Medium");
 });
 
 // ---- 无档位模型不渲染 ----
