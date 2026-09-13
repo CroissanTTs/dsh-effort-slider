@@ -5,7 +5,7 @@
   "keywords": ["deepseek-harness", "dsh", "dsh-plugin", "reasoning", "slider", "ui"],
   "license": "MIT",
   "type": "module",
-  "repository": { "type": "git", "url": "git+https://github.com/<your-github>/dsh-reasoning-slider.git" },
+  "repository": { "type": "git", "url": "git+https://github.com/CroissanTTs/dsh-effort-slider.git" },
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js",
