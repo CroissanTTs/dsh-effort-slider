@@ -1,6 +1,6 @@
-# dsh-effort-slider server bundle patch.
+# dsh-reasoning-effort-slider server bundle patch.
 # 仅声明客户端 bundle 可被装载（client 入口经 exports["./client"] 解析）。
 # 真正的 UI 注册发生在客户端 bundle（lib/client.js）的 apply() 里。
 - insert:
     - id: effort-slider-client
-      name: dsh-effort-slider
+      name: dsh-reasoning-effort-slider

@@ -1,4 +1,4 @@
-# dsh-effort-slider
+# dsh-reasoning-effort-slider
 
 English | [中文](README.zh.md)
 
@@ -28,7 +28,7 @@ If you have **never** picked a level (fresh state), the plugin writes nothing an
 ## Install
 
 ```bash
-dsh plugin --profile web add dsh-effort-slider
+dsh plugin --profile web add dsh-reasoning-effort-slider
 ```
 
 ## Relation to the Bailian plugin

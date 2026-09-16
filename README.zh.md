@@ -1,4 +1,4 @@
-# dsh-effort-slider
+# dsh-reasoning-effort-slider
 
 [English](README.md) | 中文
 
@@ -28,7 +28,7 @@ DSH 自身的模型选择器只在**同一个模型**上沿用 `reasoningEffort`
 ## 安装
 
 ```bash
-dsh plugin --profile web add dsh-effort-slider
+dsh plugin --profile web add dsh-reasoning-effort-slider
 ```
 
 ## 与百炼插件的关系
