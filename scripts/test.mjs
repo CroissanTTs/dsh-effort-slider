@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 结构测试：mock module-loader 执行 lib/client.js，验证导出与渲染逻辑。
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import yaml from "js-yaml";
 
@@ -94,6 +94,21 @@ const doc = yaml.load(readFileSync(root + "cordis.patch.yml", "utf8"));
 ok("patch insert 挂载 reasoning-slider-client", () => {
 	const ins = doc.find((e) => Array.isArray(e.insert));
 	assert.equal(ins.insert[0].name, "dsh-reasoning-effort-slider");
+});
+
+// 发布护栏：npm 只打包 package.json#files 覆盖到的路径。bundle patch 不在其中时
+// 本地 link: 安装照常工作，但**每一个从 npm 装的用户**都会因为找不到 patch 而加载失败
+// ——1.3.0 就是这样发出去的，所以这里把「files 必须覆盖 dsh.bundle.patch」钉死。
+ok("files 覆盖 dsh.bundle.patch（否则 npm 安装会缺 patch 文件）", () => {
+	const pkg = JSON.parse(readFileSync(root + "package.json", "utf8"));
+	const patch = pkg.dsh?.bundle?.patch;
+	assert.ok(patch, "package.json 必须声明 dsh.bundle.patch");
+	const rel = patch.replace(/^\.\//, "");
+	const covered = (pkg.files ?? []).some((entry) =>
+		entry.endsWith("/") ? rel.startsWith(entry) : rel === entry
+	);
+	assert.ok(covered, `files ${JSON.stringify(pkg.files)} 未覆盖 ${rel}`);
+	assert.ok(existsSync(root + rel), `${rel} 在仓库里不存在`);
 });
 
 // ---- 换模型挪档规则 ----
